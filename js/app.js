@@ -17,8 +17,7 @@
     const nodes = new Map();
     const edges = [];
 
-    const nodeDefRe = /(\w+)(?:\["([^"]*)"\]|\(["']?([^"')]*)["']?\))?/g;
-    const arrowRe = /\s*(?:-->|==>)(?:\|"([^"]*)"\|)?|(?:-\.\s*"([^"]*)"\s*\.->|-\.?->)\s*/g;
+    const arrowRe = /\s*(?:-->|==>)(?:\|"([^"]*)"\||\|([^|]*)\|)?|(?:-\.\s*"([^"]*)"\s*\.->|-\.?->)\s*/g;
 
     function ensureNode(id, label) {
       if (!nodes.has(id)) {
@@ -29,16 +28,18 @@
     }
 
     function parseNodeDef(str) {
-      const m = str.match(/^(\w+)(?:\["([^"]*)"\]|\(["']?([^"')]*)["']?\))?/);
+      const m = str.match(/^(\w+)(?:\["([^"]*)"\]|\[([^\]]*)\]|\(["']?([^"')]*)["']?\)|\{([^}]*)\})?/);
       if (!m) return { id: null, label: null };
       const id = m[1];
-      const label = m[2] != null ? m[2] : (m[3] != null ? m[3] : null);
+      const label = m[2] != null ? m[2] : (m[3] != null ? m[3] : (m[4] != null ? m[4] : (m[5] != null ? m[5] : null)));
       return { id, label };
     }
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
-      if (!line || /^\s*flowchart\s/i.test(line) || /^\s*direction\s/i.test(line)) continue;
+      if (!line) continue;
+      if (line.startsWith('%%')) continue;
+      if (/^\s*(?:flowchart|graph)\s/i.test(line) || /^\s*direction\s/i.test(line)) continue;
 
       const arrowMatches = [...line.matchAll(arrowRe)];
       if (arrowMatches.length === 0) continue;
@@ -47,7 +48,7 @@
       let partIdx = 0;
 
       for (let j = 0; j < arrowMatches.length; j++) {
-        const edgeLabel = arrowMatches[j][1] || arrowMatches[j][2] || null;
+        const edgeLabel = arrowMatches[j][1] || arrowMatches[j][2] || arrowMatches[j][3] || null;
         const leftPart = parts[partIdx];
         const rightPart = edgeLabel != null ? parts[partIdx + 2] : parts[partIdx + 1];
         partIdx += edgeLabel != null ? 3 : 2;
@@ -61,12 +62,21 @@
       }
     }
 
+    let numId = 1;
+    const mermaidIdToNum = new Map();
+    nodes.forEach(function (label, mermaidId) {
+      mermaidIdToNum.set(mermaidId, numId);
+      numId += 1;
+    });
+
     const nodeLines = [];
-    nodes.forEach(function (label, id) {
-      nodeLines.push(id + ' ' + label);
+    nodes.forEach(function (label, mermaidId) {
+      nodeLines.push(mermaidIdToNum.get(mermaidId) + ' ' + label);
     });
     const edgeLines = edges.map(function (e) {
-      return e.label != null ? e.from + ' ' + e.to + ' ' + e.label : e.from + ' ' + e.to;
+      const from = mermaidIdToNum.get(e.from);
+      const to = mermaidIdToNum.get(e.to);
+      return e.label != null ? from + ' ' + to + ' ' + e.label : from + ' ' + to;
     });
     return nodeLines.join('\n') + '\n#\n' + edgeLines.join('\n');
   }
