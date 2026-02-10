@@ -3,8 +3,8 @@ project_name: mermaid2tgf
 # use a separate dir so --clean does not wipe frontend build output (dist/app.js, dist/converter.js)
 dist: .goreleaser-dist
 before:
+  # do not run go mod tidy here: it can change go.mod/go.sum and make the tree dirty; tag must point to a clean commit
   hooks:
-    - go mod tidy
     - npm ci && npm run build
     - go test ./...
 builds:
