@@ -1,14 +1,5 @@
 exit code: 1
 
 STDERR:
-Error: read /nonexistent/file.mermaid: open /nonexistent/file.mermaid: no such file or directory
 read /nonexistent/file.mermaid: open /nonexistent/file.mermaid: no such file or directory
-
-STDOUT:
-Usage:
-  mermaid2tgf [file] [flags]
-
-Flags:
-  -h, --help          help for mermaid2tgf
-  -p, --port string   port for serve (only when first arg is 'serve') (default "9876")
 

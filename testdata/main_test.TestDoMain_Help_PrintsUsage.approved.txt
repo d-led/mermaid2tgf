@@ -1,11 +1,18 @@
 exit code: 0
 
 STDOUT:
-mermaid2tgf serve — serve embedded static site. mermaid2tgf [file] — convert file and print. No args: read from stdin.
+With no args or a file path: read Mermaid or TGF and print the conversion. Use the 'serve' subcommand to run the embedded web UI.
 
 Usage:
   mermaid2tgf [file] [flags]
+  mermaid2tgf [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  serve       Serve the embedded web UI
 
 Flags:
-  -h, --help          help for mermaid2tgf
-  -p, --port string   port for serve (only when first arg is 'serve') (default "9876")
+  -h, --help   help for mermaid2tgf
+
+Use "mermaid2tgf [command] --help" for more information about a command.

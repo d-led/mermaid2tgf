@@ -162,29 +162,41 @@ func doMain(args []string, stdin io.Reader, stdout, stderr io.Writer, osFs afero
 	rootCmd := &cobra.Command{
 		Use:   "mermaid2tgf [file]",
 		Short: "Convert between Mermaid flowchart and TGF",
-		Long:  "mermaid2tgf serve — serve embedded static site. mermaid2tgf [file] — convert file and print. No args: read from stdin.",
+		Long:  "With no args or a file path: read Mermaid or TGF and print the conversion. Use the 'serve' subcommand to run the embedded web UI.",
 		Args:  cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			in := cmd.InOrStdin()
 			out := cmd.OutOrStdout()
-			if len(args) == 1 && args[0] == "serve" {
-				port, _ := cmd.Flags().GetString("port")
-				if port == "" {
-					port = "9876"
-				}
-				return runServe(embedded, ":"+port, cmd.ErrOrStderr())
-			}
 			if len(args) == 0 {
 				return runConvertStdin(embedded, in, out)
 			}
 			return runConvert(osFs, embedded, args[0], out)
 		},
 	}
+	rootCmd.SilenceUsage = true
+	rootCmd.SilenceErrors = true
+
+	serveCmd := &cobra.Command{
+		Use:   "serve",
+		Short: "Serve the embedded web UI",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			port, _ := cmd.Flags().GetString("port")
+			if port == "" {
+				port = "9876"
+			}
+			return runServe(embedded, ":"+port, cmd.ErrOrStderr())
+		},
+	}
+	serveCmd.SilenceUsage = true
+	serveCmd.SilenceErrors = true
+	serveCmd.Flags().StringP("port", "p", "9876", "port to listen on")
+
+	rootCmd.AddCommand(serveCmd)
 	rootCmd.SetArgs(args)
 	rootCmd.SetIn(stdin)
 	rootCmd.SetOut(stdout)
 	rootCmd.SetErr(stderr)
-	rootCmd.Flags().StringP("port", "p", "9876", "port for serve (only when first arg is 'serve')")
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(stderr, err)
 		return 1
