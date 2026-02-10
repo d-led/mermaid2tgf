@@ -3,6 +3,7 @@ project_name: mermaid2tgf
 before:
   hooks:
     - go mod tidy
+    - npm ci && npm run build
     - go test ./...
 builds:
   - env:
