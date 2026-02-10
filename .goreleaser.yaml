@@ -1,0 +1,87 @@
+version: 2
+project_name: mermaid2tgf
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - windows
+      - linux
+      - darwin
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.BuildSHA={{ .ShortCommit }}
+
+archives:
+  - formats: [ 'tar.gz' ]
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+    - goos: windows
+      formats: [ 'zip' ]
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+universal_binaries:
+  - replace: true
+
+brews:
+  -
+    name: mermaid2tgf
+    homepage: "https://github.com/d-led/mermaid2tgf"
+    repository:
+      owner: d-led
+      name: homebrew-d-led
+    commit_author:
+      name: Dmitry Ledentsov
+      email: dmlled@yahoo.com
+
+chocolateys:
+  -
+    name: mermaid2tgf
+    owners: Dmitry Ledentsov
+    authors: Dmitry Ledentsov
+    project_url: https://github.com/d-led/mermaid2tgf
+    project_source_url: https://github.com/d-led/mermaid2tgf
+    docs_url: https://github.com/d-led/mermaid2tgf
+    url_template: "https://github.com/d-led/mermaid2tgf/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    copyright: 2023 Dmitry Ledentsov
+    license_url: https://github.com/d-led/mermaid2tgf/blob/main/LICENSE
+    bug_tracker_url: https://github.com/d-led/mermaid2tgf/issues
+    tags: "mermaid tgf diagram convert"
+    summary: Converts Mermaid diagrams to/from TGF and serves an embedded web UI.
+    description: |
+      {{ .ProjectName }} installer package.
+      Converts Mermaid diagrams to/from TGF and serves an embedded web UI.
+      USAGE: `mermaid2tgf --help` or `mermaid2tgf serve` for the web UI
+    release_notes: "https://github.com/d-led/mermaid2tgf/releases/tag/v{{ .Version }}"
+
+    api_key: '{{ .Env.CHOCOLATEY_API_KEY }}'
+    source_repo: "https://push.chocolatey.org/"
+    skip_publish: false
+    goamd64: v1
+
+
+# The lines beneath this are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
