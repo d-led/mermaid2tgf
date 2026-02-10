@@ -1,0 +1,7 @@
+exit code: 0
+
+STDOUT:
+flowchart TD
+  1["alpha"]
+  2["beta"]
+  1 --> 2

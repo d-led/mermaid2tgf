@@ -1,0 +1,10 @@
+flowchart TD
+  1["Frontend source code (Vite app)"]
+  2["Built frontend files (dist folder)"]
+  3["Backend source code (Rust server)"]
+  4["Backend executable (server binary)"]
+  1 -->|"Build frontend files"| 2
+  3 -->|"Compile backend executable"| 4
+  2 -->|"Embedded into"| 4
+  2 -->|"HTTP requests"| 4
+  2 -->|"WebSocket connection"| 4

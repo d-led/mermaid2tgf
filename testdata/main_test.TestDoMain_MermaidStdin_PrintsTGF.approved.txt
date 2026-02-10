@@ -1,0 +1,9 @@
+exit code: 0
+
+STDOUT:
+1 A
+2 B
+3 C
+#
+1 2
+2 3

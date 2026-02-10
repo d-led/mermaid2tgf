@@ -1,0 +1,4 @@
+1 Only node
+2 Only edge
+#
+1 2

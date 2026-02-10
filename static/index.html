@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mermaid to TGF</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <h1>Mermaid ↔ TGF</h1>
+
+      <div class="panel">
+        <label for="mermaid">Input: Mermaid flowchart or TGF (editable)</label>
+        <textarea
+          id="mermaid"
+          placeholder="Paste Mermaid or TGF, or leave empty for demo…"
+        ></textarea>
+      </div>
+
+      <div class="swap-cell">
+        <button
+          type="button"
+          class="btn btn-swap"
+          id="swap"
+          title="Copy output into input"
+        >
+          ⇄ Swap
+        </button>
+      </div>
+
+      <div class="panel">
+        <label for="tgf">Output: TGF or Mermaid flowchart</label>
+        <textarea id="tgf" class="readonly" readonly></textarea>
+      </div>
+
+      <div class="toolbar">
+        <span class="spacer"></span>
+        <button type="button" class="btn" id="download">Download</button>
+      </div>
+    </div>
+
+    <script src="dist/app.js"></script>
+  </body>
+</html>

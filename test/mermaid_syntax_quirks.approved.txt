@@ -1,0 +1,8 @@
+1 Process box
+2 Round edges
+3 Diamond
+4 End
+#
+1 2 arrow label
+2 3 dotted label
+3 4 thick label

@@ -1,0 +1,11 @@
+exit code: 0
+
+STDOUT:
+mermaid2tgf serve — serve embedded static site. mermaid2tgf [file] — convert file and print. No args: read from stdin.
+
+Usage:
+  mermaid2tgf [file] [flags]
+
+Flags:
+  -h, --help          help for mermaid2tgf
+  -p, --port string   port for serve (only when first arg is 'serve') (default "9876")

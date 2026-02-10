@@ -1,0 +1,12 @@
+1 Christmas
+2 Go shopping
+3 Let me think
+4 Laptop
+5 iPhone
+6 fa:fa-car Car
+#
+1 2 Get money
+2 3
+3 4 One
+3 5 Two
+3 6 Three

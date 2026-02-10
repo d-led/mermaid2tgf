@@ -1,0 +1,7 @@
+exit code: 0
+
+STDOUT:
+1 Start
+2 End
+#
+1 2

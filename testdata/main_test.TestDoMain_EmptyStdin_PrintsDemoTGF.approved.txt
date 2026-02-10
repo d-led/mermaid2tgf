@@ -1,0 +1,13 @@
+exit code: 0
+
+STDOUT:
+1 Frontend source code (Vite app)
+2 Built frontend files (dist folder)
+3 Backend source code (Rust server)
+4 Backend executable (server binary)
+#
+1 2 Build frontend files
+3 4 Compile backend executable
+2 4 Embedded into
+2 4 HTTP requests
+2 4 WebSocket connection
