@@ -76,7 +76,7 @@ chocolateys:
     project_source_url: https://github.com/d-led/mermaid2tgf
     docs_url: https://github.com/d-led/mermaid2tgf
     url_template: "https://github.com/d-led/mermaid2tgf/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-    copyright: 2023 Dmitry Ledentsov
+    copyright: 2026 Dmitry Ledentsov
     license_url: https://github.com/d-led/mermaid2tgf/blob/main/LICENSE
     bug_tracker_url: https://github.com/d-led/mermaid2tgf/issues
     tags: "mermaid tgf diagram convert"
