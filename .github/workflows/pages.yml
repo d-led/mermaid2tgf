@@ -27,9 +27,9 @@ jobs:
         with:
           go-version: stable
       - run: npm ci
+      - run: npm run build
       - run: npm run test
       - run: npm run go:test
-      - run: npm run build
       - run: mkdir -p publish/dist && cp static/index.html static/index.css publish/ && cp dist/app.js publish/dist/
       - run: sed -i "s/__BUILD_SHA__/${GITHUB_SHA::7}/g" publish/index.html
       - uses: actions/upload-pages-artifact@v3
