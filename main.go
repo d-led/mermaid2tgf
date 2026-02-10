@@ -17,6 +17,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// buildSHA is set at link time: go build -ldflags "-X main.buildSHA=<value>" (default "(devel)").
+// If still "(devel)" at run time, BUILD_SHA env is used.
+var buildSHA = "(devel)"
+
 //go:embed static/*
 var staticEmbed embed.FS
 
@@ -54,6 +58,9 @@ func buildEmbeddedFS() (afero.Fs, error) {
 				if err := mem.MkdirAll(dirPath, 0755); err != nil {
 					return err
 				}
+			}
+			if outPath == "index.html" {
+				data = []byte(strings.ReplaceAll(string(data), "__BUILD_SHA__", buildSHA))
 			}
 			return afero.WriteFile(mem, outPath, data, 0644)
 		})
@@ -107,7 +114,6 @@ func runServe(embedded afero.Fs, addr string, out io.Writer) error {
 			c.Status(http.StatusNotFound)
 			return
 		}
-		// Serve content directly to avoid FileFromFS redirect loop on index.html
 		ctype := contentTypeFor(name)
 		c.Header("Content-Type", ctype)
 		c.Status(http.StatusOK)
@@ -187,6 +193,11 @@ func doMain(args []string, stdin io.Reader, stdout, stderr io.Writer, osFs afero
 }
 
 func main() {
+	if buildSHA == "(devel)" {
+		if s := os.Getenv("BUILD_SHA"); s != "" {
+			buildSHA = s
+		}
+	}
 	embedded, err := buildEmbeddedFS()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "init embedded fs:", err)

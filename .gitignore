@@ -252,6 +252,7 @@ fabric.properties
 
 # Approvals.NodeJS - ignore received files, keep *.approved.*
 *.received.*
-./mermaid2tfg
+./mermaid2tgf
 ./mermaid2tgf.exe
 ./.approval_tests_temp
+publish/
