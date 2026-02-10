@@ -8,7 +8,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "go:test": "go test ./...",
-    "go:build": "npm run build && CGO_ENABLED=0 go build -ldflags \"-X main.buildSHA=${BUILD_SHA:-'(devel)'}\" -o mermaid2tgf .",
+    "go:build": "npm run build && CGO_ENABLED=0 go build -ldflags \"-X main.BuildSHA=${BUILD_SHA:-'(devel)'}\" -o mermaid2tgf .",
     "serve": "npm run build && go run . serve"
   },
   "devDependencies": {
