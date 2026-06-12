@@ -13,9 +13,9 @@
   },
   "devDependencies": {
     "approvals": "^7.1.3",
-    "esbuild": "^0.27.3",
+    "esbuild": "^0.28.1",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.8"
   }
 }
